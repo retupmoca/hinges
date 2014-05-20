@@ -12,7 +12,7 @@ class Hinges::Context {
         for @pairs {
             %vars{.key} = .value;
         }
-        return self.bless(*, :%vars);
+        return self.bless(:%vars);
     }
 
     method get($thing is copy) {
@@ -25,11 +25,11 @@ class Hinges::Context {
 
 class Hinges::Template {
     has $!source;
-    has $!filepath;
-    has $!filename;
+    has $.filepath;
+    has $.filename;
     has $!loader;
     has $!encoding;
-    has $!lookup;
+    has $.lookup;
     has $!allow_exec;
     has $!stream;
 
@@ -51,7 +51,7 @@ class Hinges::Template {
 
     method new($source, $filepath?, $filename?, $loader?,
                $encoding?, $lookup = 'strict', $allow_exec = True) {
-        self.bless(*,
+        self.bless(
                    :$source, :$filepath, :$filename, :$loader,
                    :$encoding, :$lookup, :$allow_exec);
     }
@@ -88,13 +88,9 @@ class Hinges::Template {
 }
 
 class Hinges::MarkupTemplate is Hinges::Template {
-    submethod BUILD(:$!source, :$!filepath, :$!filename, :$!loader,
-                    :$!encoding, :$!lookup, :$!allow_exec) {
-    }
-
     method _parse($source is copy, $encoding) {
         if $source !~~ Hinges::Stream {
-            $source = Hinges::XMLParser.new($source, $!filename, $encoding);
+            $source = Hinges::XMLParser.new($source, $.filename, $encoding);
         }
 
         my @stream;
@@ -104,7 +100,7 @@ class Hinges::MarkupTemplate is Hinges::Template {
 
             if $kind ~~ Hinges::StreamEventKind::text {
                 @stream.push:
-                    interpolate($data, $!filepath, $pos[1], $pos[2], $!lookup);
+                    interpolate($data, $.filepath, $pos[1], $pos[2], $.lookup);
             }
             else {
                 @stream.push( [$kind, $data, $pos] );
@@ -117,6 +113,6 @@ class Hinges::MarkupTemplate is Hinges::Template {
 
 class Hinges::Markup {
     method new($text) {
-        return self.bless(*, :$text);
+        return self.bless(:$text);
     }
 }

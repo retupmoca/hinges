@@ -35,8 +35,10 @@ class Hinges::XMLParser {
     has $!text;
 
     method new($text, $filename?, $encoding?) {
-        return self.bless(*, :$text);
+        return self.bless(:$text);
     }
+
+    submethod BUILD(:$!text) { }
 
     submethod make-events(Match $m, $text) {
         return () unless $m<xmlcontent>;

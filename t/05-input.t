@@ -222,7 +222,7 @@ todo('not implemented yet', 49);
     my ($version, $encoding, $standalone) = $data;
     is Hinges::StreamEventKind::xml-decl, $kind, 'got an xml-decl event';
     is '1.0', $version, 'the version is 1.0';
-    ok !defined $encoding, 'no encoding';
+    ok !defined($encoding), 'no encoding';
     is -1, $standalone, 'not standalone';
 }
 
@@ -244,7 +244,7 @@ todo('not implemented yet', 49);
     my ($version, $encoding, $standalone) = $data;
     is Hinges::StreamEventKind::xml-decl, $kind, 'got an xml-decl event';
     is '1.0', $version, 'the version is 1.0';
-    ok !defined $encoding, 'no encoding';
+    ok !defined($encoding), 'no encoding';
     is 1, $standalone, 'standalone';
 }
 
